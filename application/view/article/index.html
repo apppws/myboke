@@ -1,0 +1,84 @@
+{extend name="common/base"}
+
+{block name="content"}
+<div class="am-u-md-12 am-u-sm-12">
+    <ol class="am-breadcrumb">
+        <li><a href="/" class="am-icon-home">首页</a></li>
+        <li>系统管理</li>
+        <li class="am-active">文章管理</li>
+    </ol>
+    <p>
+        <a href="/article/create.html" class="am-btn am-btn-success">新增</a>
+    </p>
+    <table class="am-table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th width="100">标题</th>
+                <th width="150">分类</th>
+                <th width="100">封面</th>
+                <th width="80">评论数</th>
+                <th width="150">标签</th>
+                <th>修改时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $articles as $k => $v}
+            <tr>
+                <td>{$k+1}</td>
+                <td><a href="/article/read/id/{$v.id}.html">{$v.title}</a></td>
+                <td>{$v.sorts.sort_name|default="分类好像消失了"}</td>
+                <td><img style="width: 100%;" src="{$v.cover}" alt=""></td>
+                <td>{$v.comments}</td>
+                <td>
+                    {foreach $v->tags as $k2 => $v2}
+                    <a style="font-size:12px;" href="javascript:;" class="blog-tag">{$v2.tag_name}</a>
+                    {/foreach}
+                </td>
+                <td>{$v.update_time}</td>
+                <td>
+                    <button type="button" onclick="edit('{$v.id}')" class="am-btn am-btn-primary  am-btn-xs">修改</button>
+                    <button type="button" onclick="tag('{$v.id}')" class="am-btn am-btn-secondary  am-btn-xs">标签</button>
+                    <button type="button" onclick="del('{$v.id}')" class="am-btn am-btn-danger  am-btn-xs">删除</button>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="am-modal am-modal-prompt" tabindex="-1" id="del">
+    <div class="am-modal-dialog">
+        <div class="am-modal-bd">
+            你确定要删除吗？
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    function edit(id){
+        location.href = '/article/edit/id/'+id+'.html';        
+    }
+
+    function tag(id){
+        location.href = '/article/at/id/'+id+'.html';
+    }
+
+    function del(id) {
+        $('#del').modal({
+            relatedTarget: this,
+            onConfirm: function (e) {
+                location.href = "/article/delete/id/" + id + '.html';
+            },
+            onCancel: function (e) { }
+        });
+    }
+</script>
+{/block}

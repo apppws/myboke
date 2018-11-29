@@ -1,0 +1,122 @@
+{extend name="common/base"}
+
+{block name="title"}{$article.title}{/block}
+
+{block name="link"}
+<link rel="stylesheet" href="/static/styles/default.css">
+<script src="/static/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{/block}
+
+{block name="content"}
+<div class="am-u-md-12 am-u-sm-12">
+    <ol class="am-breadcrumb">
+        <li><a href="/" class="am-icon-home">首页</a></li>
+        <li>文章详情</li>
+        <li class="am-active">{$article.title}</li>
+    </ol>
+    <div class="am-u-md-8 am-u-sm-12">
+        <article class="am-article blog-article-p">
+            <div class="am-article-hd">
+                <h1 class="am-article-title blog-text-center">{$article.title}</h1>
+                <p class="am-article-meta blog-text-center">
+                    <span><span class="blog-color">pws &nbsp;</span></span>-
+                    <span><a href="/index/sort/id/{$article.sorts.id}.html">@{$article.sorts.sort_name} &nbsp;</a></span>-
+                    <span>{$article.update_time}</span>
+                </p>
+            </div>
+            <div class="am-article-bd">
+                {$article.content|raw}
+            </div>
+        </article>
+
+        <div class="am-g blog-article-widget blog-article-margin">
+            <div class="am-u-lg-4 am-u-md-5 am-u-sm-7 am-u-sm-centered blog-text-center">
+                <span class="am-icon-tags"> &nbsp;</span>
+                {foreach $article->tags as $k => $v}
+                <a href="/index/tag/id/{$v.id}.html">{$v.tag_name}</a> &nbsp;
+                {/foreach}
+
+            </div>
+        </div>
+        <hr>
+        <ul class="am-pagination blog-article-margin">
+            <li class="am-pagination-prev">
+                {if $last}
+                <a href="/article/read/id/{$last.id}.html">&laquo; {$last.title}</a>
+                {else}
+                <a href="#" disabled>没有了</a>
+                {/if}
+            </li>
+            <li class="am-pagination-next">
+                {if $next}
+                <a href="/article/read/id/{$next.id}.html">{$next.title} &raquo;</a>
+                {else}
+                <a href="#" disabled>没有了</a>
+                {/if}
+            </li>
+        </ul>
+
+        <hr>
+        <h3 class="blog-comment">评论</h3>
+        <ul class="am-comments-list am-comments-list-flip">
+            {foreach $comments as $k => $v}
+            <li class="am-comment">
+                <a target="_blank" href="{$v.url|default="javascript:alert('对方并没有留下自己的地址');"}">
+                    <img src="/static/i/total_avatar.png" alt="" class="am-comment-avatar" width="48" height="48" />
+                </a>
+
+                <div class="am-comment-main">
+                    <div class="am-comment-hd">
+                        <div class="am-comment-meta">
+                            <a target="_blank" href="{$v.url|default="javascript:alert('对方并没有留下自己的地址');"}" class="am-comment-author">{$v.nick_name}</a>
+                            评论于 <time>{$v.create_time}</time>
+                        </div>
+                    </div>
+
+                    <div class="am-comment-bd">
+                        <p>{$v.content}</p>
+                        {if $v.reply}
+                        <blockquote>作者回复：{$v.reply}</blockquote>
+                        {/if}
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+        <hr>
+        <h3 class="blog-comment">留下您的足迹呗</h3>
+        <form action="/article/comment/id/{$article.id}.html" method="POST" class="am-form am-g">
+            <fieldset>
+                <div class="am-form-group am-u-sm-4 blog-clear-left">
+                    <input name="nick_name" maxlength="10" type="text" class="" required placeholder="昵称">
+                </div>
+                <div class="am-form-group am-u-sm-4">
+                    <input name="email" type="email" class="" title="可不填" placeholder="邮箱(仅用作回复，不公开)">
+                </div>
+
+                <div class="am-form-group am-u-sm-4 blog-clear-right">
+                    <input name="url" type="url" class="" title="显示后点击昵称即可跳转至该url，可不填" placeholder="网站(显示后点击昵称即可跳转至该url)">
+                </div>
+
+                <div class="am-form-group">
+                    <textarea name="content" maxlength="255" class="" rows="5" placeholder="一字千金"></textarea>
+                </div>
+                <div class="am-form-group">
+                        <img style="width: 200px;display: inline-block;" src="{:captcha_src()}" alt="captcha" onclick="this.src='/captcha.html?r='+Math.random()" />
+                        <input style="width: 200px;display: inline-block;" name="captcha" type="text" class="" required placeholder="请输入验证码">
+                </div>
+                <p><button type="submit" class="am-btn am-btn-default">发表评论</button></p>
+            </fieldset>
+        </form>
+
+        <hr>
+    </div>
+    {include file="common/zujian"}
+</div>
+
+{/block}
+
+{block name="js"}
+
+{/block}

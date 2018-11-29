@@ -1,0 +1,113 @@
+{extend name="common/base"}
+
+{block name="content"}
+<div class="am-u-md-12 am-u-sm-12">
+    <ol class="am-breadcrumb">
+        <li><a href="/" class="am-icon-home">首页</a></li>
+        <li>系统管理</li>
+        <li class="am-active">标签管理</li>
+    </ol>
+    <p>
+        <button onclick="add()" class="am-btn am-btn-success">新增</button>
+    </p>
+    <table class="am-table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>标签名称</th>
+                <th>最后修改时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $tags as $k => $v}
+            <tr>
+                <td>{$k+1}</td>
+                <td>{$v.tag_name}</td>
+                <td>{$v.update_time}</td>
+                <td>
+                    <button type="button" onclick="edit('{$v.id}','{$v.tag_name}')" class="am-btn am-btn-primary">修改</button>
+                    <button type="button" onclick="del('{$v.id}')" class="am-btn am-btn-danger">删除</button>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="am-modal am-modal-prompt" tabindex="-1" id="add">
+    <div class="am-modal-dialog">
+        <div class="am-modal-bd">
+            输入名字
+            <input type="text" class="am-modal-prompt-input">
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+        </div>
+    </div>
+</div>
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="edit">
+    <div class="am-modal-dialog">
+        <div class="am-modal-bd">
+            输入名字
+            <input type="text" class="am-modal-prompt-input">
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="del">
+    <div class="am-modal-dialog">
+        <div class="am-modal-bd">
+            你确定要删除吗？
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    function add() {
+        $('#add').modal({
+            relatedTarget: this,
+            onConfirm: function (e) {
+                location.href = '/tag/save.html?tag_name=' + e.data;
+            },
+            onCancel: function (e) {
+                // alert('不想说!');
+            }
+        });
+    }
+
+    function edit(id, name) {
+        $('#edit input').val(name);
+        $('#edit').modal({
+            relatedTarget: this,
+            onConfirm: function (e) {
+                location.href = '/tag/update/id/' + id + '.html?tag_name=' + e.data;
+            },
+            onCancel: function (e) { }
+        });
+    }
+
+    function del(id) {
+        $('#del').modal({
+            relatedTarget: this,
+            onConfirm: function (e) {
+                location.href = "/tag/delete/id/" + id + '.html';
+            },
+            onCancel: function (e) { }
+        });
+    }
+</script>
+{/block}

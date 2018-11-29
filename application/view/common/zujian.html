@@ -1,0 +1,20 @@
+<div class="am-u-md-4 am-u-sm-12 blog-sidebar">
+    <div class="blog-sidebar-widget blog-bor">
+        <h2 class="blog-text-center blog-title"><span>About ME</span></h2>
+        <img src="/static/i/my.jpg" alt="about me" class="blog-entry-img">
+        <h3>彭文双</h3>
+        <p>
+            座右铭：人因为梦想而伟大，机遇永远属于那些有准备、立即行动并能坚持到底的人!
+        </p>
+        <p>做了足够时间的伸手党，我也要将自己的东西慢慢整理起来，给自己，也给需要的人，所以，这个网站将会在岁月中满满丰富起来</p>
+        <p>欢迎来撩~</p>
+    </div>
+    <div class="blog-clear-margin blog-sidebar-widget blog-bor am-g ">
+        <h2 class="blog-title"><span>TAG cloud</span></h2>
+        <div class="am-u-sm-12 blog-clear-padding">
+            {foreach :model('tags')->select() as $k => $v}
+            <a href="/index/tag/id/{$v.id}.html" class="blog-tag">{$v.tag_name}</a>
+            {/foreach}
+        </div>
+    </div>
+</div>
